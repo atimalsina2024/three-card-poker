@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Three Card Poker Test Suite" verbose="1" thread-count="1">
+	<!--<test name="UI Tests - Deal Hand">
+		<classes>
+			<class name="com.portfolio.threecard.ui.DealHandUITest"></class>
+		</classes>
+	</test>
+	<test name="UI Test - Hand Rank">
+		<classes>
+			<class name="com.portfolio.threecard.ui.HandRankUiTest"></class>
+		</classes>
+	</test>-->
+	<test name="API Test - Deal Hand">
+		<classes>
+			<class name="com.portfolio.threecard.api.DealApiTest"></class>
+		</classes>
+	</test>
+	<test name="API Test - Evaluate Hand">
+		<classes>
+			<class name="com.portfolio.threecard.api.EvaluateApiNegativeTest"></class>
+			<class name="com.portfolio.threecard.api.EvaluateApiTest"></class>
+		</classes>
+	</test>
+</suite>

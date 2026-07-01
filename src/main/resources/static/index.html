@@ -1,0 +1,122 @@
+<html>
+
+<head>
+	<style>
+		#deal-button {
+			font-size: 20px;
+			background-color: cornflowerblue;
+			font-weight: bold;
+			padding: 10px 20px;
+
+		}
+
+		#deal-button.clicked {
+			background-color: red;
+		}
+		
+		.card{
+			font-size: x-large;
+			font-weight: bold;
+			font-family: Arial, Helvetica, sans-serif;
+			margin: 10px;
+			display: inline-block;
+		}
+		.heart,
+		.diamond {
+			color: red;
+		}
+		.club,
+		.spade{
+			color: black;
+		}
+	</style>
+</head>
+
+<body>
+	<button id="deal-button">Deal</button>
+	<div id="card-0"></div>
+	<div id="card-1"></div>
+	<div id="card-2"></div>
+	<p id="error-msg"></p>
+	<div id="hand-result"></div>
+
+	<script>
+		let dealButton = document.getElementById("deal-button");
+		const card0 = document.getElementById("card-0");
+		const card1 = document.getElementById("card-1");
+		const card2 = document.getElementById("card-2");
+		const handResult = document.getElementById("hand-result");
+		const errorMsg = document.getElementById("error-msg");
+		let dealResult;
+
+
+		dealButton.addEventListener("click", handleDealClick);
+		async function handleDealClick() {
+			handResult.textContent="";
+			dealButton.classList.toggle("clicked")
+			dealButton.disabled = true;
+			try {
+				const dealResponse = await fetch('/api/deal',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+				dealResult = await dealResponse.json();
+				const cards = dealResult.cards;
+				card0.innerHTML = renderCard(cards[0])
+				card1.innerHTML = renderCard(cards[1]);
+				card2.innerHTML = renderCard(cards[2]);
+
+				//card0.textContent = JSON.stringify(cards[0]);
+				//card1.textContent = JSON.stringify(cards[1]);
+				//card2.textContent = JSON.stringify(cards[2]);
+
+			}
+			catch (error) {
+				errorMsg.textContent = "Fetching dealt cards failed" + error;
+				console.error('Fetching dealt cards failed', error);
+			}
+			try{
+				const evaluateCardsResponse = await fetch("/api/evaluate",
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body:JSON.stringify(dealResult)
+
+					}
+				)
+				const evaluationResult = await evaluateCardsResponse.json();
+				handResult.textContent = JSON.stringify(evaluationResult.description);
+				dealButton.classList.remove("clicked");
+				dealButton.disabled = false;
+				
+			}
+			catch(error){
+				errorMsg.textContent = "failed to evaluate cards" + error;
+				console.error('Fetfailed to evaluate cards', error);
+			}
+		}
+		
+		function renderCard(card){
+			const suitMap = {
+				"Hearts":{"symbol":"♥", className:"heart"},
+				"Diamonds":{"symbol":"♦", className:"diamond"},
+				"Clubs":{"symbol":"♣", className:"club"},
+				"Spade":{"symbol":"♠", className:"spade"}
+			};
+			
+			const suit = suitMap[card.suit];
+			return `
+				<span class="card ${suit.className}">
+					${card.rank}${suit.symbol}
+					</span>
+			`;
+		}
+	</script>
+</body>
+
+</html>
