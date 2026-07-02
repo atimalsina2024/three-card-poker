@@ -19,6 +19,14 @@ jobs:
           distribution: 'temurin'
       - name: Run JUnit 5 unit tests
         run: mvn test
+
+      - name: Upload Allure Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-unit
+          path: allure-results/
+
   api-tests:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -45,3 +53,48 @@ jobs:
         with:
           name: api-test-results
           path: target/surefire-reports/
+
+      - name: Upload Allure Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-api
+          path: allure-results/
+
+  publish-reports:
+    runs-on: ubuntu-latest
+    needs: [unit-tests, api-tests]
+    if: always()
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: Download unit test Allure results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-unit
+          path: allure-results/
+
+      - name: Download API test Allure results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-api
+          path: allure-results/
+
+      - name: Generate Allure Report
+        uses: simple-ict/allure-action@v1
+        with:
+          allure_results: allure-results/
+          allure_reports: allure-reports/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN  }}
+          publish_dir: allure-reports
+
