@@ -31,3 +31,15 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Allure ###
+allure-results/
+allure-report/
+
+#others
+.idea/
+.settings/
+.classpath
+.project
+*.class
+test-output/
