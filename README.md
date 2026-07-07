@@ -6,17 +6,18 @@ This is a simple full stack 3 Card Poker application built to demonstrate SDET s
 
 
 ## Technical Stack
-### |Layer|Technology|
-|------|--------------|
-|Row 1 Backend|Row 1 Java 17, Spring Boot 3.2|
-|Row 2 Game Logic| Row 2 Custom HandEvaluator Service|
-|Row 3 Frontend| Row 3HTML5, Javascript, Fetch API|
-|Row 4 Unit Tests| Row 4 JUnit 5, parameterized tests|
-|Row 5 API tests| Row 5 REST Assured, JSON Schema validation|
-|Row 6 UI Automation| Row 6 Selenium WebDriver, TestNG, Page Object Model|
-|Row 7 Reporting|Row 7 Allure Reports|
-|Row 8 CI/CD| Row 8 GitHub Actions|
-|Row 9 Build Tool| Row 9 Maven|
+
+| Layer | Technology |
+|-------|------------|
+| Backend | Java 17, Spring Boot 3.2 |
+| Game Logic | Custom `HandEvaluator` Service |
+| Frontend | HTML5, JavaScript, Fetch API |
+| Unit Tests | JUnit 5, Parameterized Tests (`@ParameterizedTest`, `@MethodSource`) |
+| API Tests | REST Assured, JSON Schema Validation |
+| UI Automation | Selenium WebDriver, TestNG, Page Object Model (POM) |
+| Reporting | Allure Reports |
+| CI/CD | GitHub Actions |
+| Build Tool | Maven |
 
 ## Test Strategy
 ### Unit Tests
